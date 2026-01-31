@@ -13,6 +13,49 @@
 
 <body>
 
+    <!-- Checkout Modal -->
+    <div class="checkout-overlay" id="checkoutOverlay"></div>
+    <div class="checkout-modal" id="checkoutModal">
+        <div class="checkout-header">
+            <h3>Completar Pedido</h3>
+            <button class="checkout-close" id="checkoutClose"><i class="fas fa-times"></i></button>
+        </div>
+        <form class="checkout-form" name="pedidos" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="checkoutForm">
+            <input type="hidden" name="form-name" value="pedidos">
+            <p class="hidden" style="display:none;">
+                <label>No llenar si eres humano: <input name="bot-field"></label>
+            </p>
+            <div class="checkout-order-summary" id="checkoutOrderSummary">
+                <!-- Order summary will be populated here -->
+            </div>
+            <input type="hidden" name="productos" id="productosInput">
+            <input type="hidden" name="total" id="totalInput">
+            <div class="checkout-field">
+                <label for="customerName">Nombre Completo *</label>
+                <input type="text" id="customerName" name="nombre" required placeholder="Tu nombre completo">
+            </div>
+            <div class="checkout-field">
+                <label for="customerEmail">Correo Electrónico *</label>
+                <input type="email" id="customerEmail" name="email" required placeholder="tu@email.com">
+            </div>
+            <div class="checkout-field">
+                <label for="customerPhone">Teléfono *</label>
+                <input type="tel" id="customerPhone" name="telefono" required placeholder="+1 809 000 0000">
+            </div>
+            <div class="checkout-field">
+                <label for="customerAddress">Dirección de Entrega *</label>
+                <textarea id="customerAddress" name="direccion" required placeholder="Dirección completa para entrega" rows="3"></textarea>
+            </div>
+            <div class="checkout-field">
+                <label for="customerNotes">Notas Adicionales (opcional)</label>
+                <textarea id="customerNotes" name="notas" placeholder="Instrucciones especiales, horario preferido, etc." rows="2"></textarea>
+            </div>
+            <button type="submit" class="btn-submit-order">
+                <i class="fas fa-paper-plane"></i> Enviar Pedido
+            </button>
+        </form>
+    </div>
+
     <!-- Cart Sidebar -->
     <div class="cart-overlay" id="cartOverlay"></div>
     <div class="cart-sidebar" id="cartSidebar">
