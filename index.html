@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ferretería GLEM | Calidad y Elegancia</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome CDN placeholder, might need to replace if not working or use SVGs -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Carrito de Compras</h3>
+            <button class="cart-close" id="cartClose"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be populated here -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">$0.00</span>
+            </div>
+            <button class="btn-checkout" id="btnCheckout">Proceder al Pago</button>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="logo">GLEM</a>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#productos">Productos</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+            <div class="nav-icons">
+                <div class="cart-icon" id="cartIcon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
+                <div class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="inicio" class="hero">
+        <div class="hero-content">
+            <h1>Construyendo Sueños con <span class="highlight">Excelencia</span></h1>
+            <p>La mejor selección de herramientas y materiales para tus proyectos más ambiciosos.</p>
+            <a href="#productos" class="btn-primary">Ver Catálogo</a>
+        </div>
+    </header>
+
+    <!-- Services Section -->
+    <section id="servicios" class="services">
+        <div class="container">
+            <h2 class="section-title">Nuestros Servicios</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <i class="fas fa-tools"></i>
+                    <h3>Herramientas Profesionales</h3>
+                    <p>Equipos de alta gama para resultados impecables.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-paint-roller"></i>
+                    <h3>Pinturas y Acabados</h3>
+                    <p>Colores y texturas que dan vida a tus espacios.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-hard-hat"></i>
+                    <h3>Material de Construcción</h3>
+                    <p>La base sólida que todo gran proyecto necesita.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section id="productos" class="products">
+        <div class="container">
+            <h2 class="section-title">Productos Destacados</h2>
+            <div class="product-grid">
+                <!-- Products will be populated here -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="drill.png" alt="Taladro Percutor Pro">
+                    </div>
+                    <h3>Taladro Percutor Pro</h3>
+                    <p class="price">$120.00</p>
+                    <button class="btn-secondary btn-add-cart" data-name="Taladro Percutor Pro" data-price="120.00">Añadir</button>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="wrenches.png" alt="Set de Llaves Maestras">
+                    </div>
+                    <h3>Set de Llaves Maestras</h3>
+                    <p class="price">$85.00</p>
+                    <button class="btn-secondary btn-add-cart" data-name="Set de Llaves Maestras" data-price="85.00">Añadir</button>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="paint.png" alt="Pintura Premium 5gl">
+                    </div>
+                    <h3>Pintura Premium 5gl</h3>
+                    <p class="price">$65.00</p>
+                    <button class="btn-secondary btn-add-cart" data-name="Pintura Premium 5gl" data-price="65.00">Añadir</button>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-hammer product-icon"></i>
+                    </div>
+                    <h3>Martillo de Carpintero</h3>
+                    <p class="price">$35.00</p>
+                    <button class="btn-secondary btn-add-cart" data-name="Martillo de Carpintero" data-price="35.00">Añadir</button>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-ruler product-icon"></i>
+                    </div>
+                    <h3>Cinta Métrica 8m</h3>
+                    <p class="price">$18.00</p>
+                    <button class="btn-secondary btn-add-cart" data-name="Cinta Métrica 8m" data-price="18.00">Añadir</button>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-screwdriver product-icon"></i>
+                    </div>
+                    <h3>Set Destornilladores 12pc</h3>
+                    <p class="price">$45.00</p>
+                    <button class="btn-secondary btn-add-cart" data-name="Set Destornilladores 12pc" data-price="45.00">Añadir</button>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-cut product-icon"></i>
+                    </div>
+                    <h3>Sierra Manual Pro</h3>
+                    <p class="price">$55.00</p>
+                    <button class="btn-secondary btn-add-cart" data-name="Sierra Manual Pro" data-price="55.00">Añadir</button>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-mitten product-icon"></i>
+                    </div>
+                    <h3>Guantes de Seguridad</h3>
+                    <p class="price">$22.00</p>
+                    <button class="btn-secondary btn-add-cart" data-name="Guantes de Seguridad" data-price="22.00">Añadir</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="contact">
+        <div class="container">
+            <h2 class="section-title">Contáctanos</h2>
+            <div class="contact-wrapper">
+                <div class="contact-info">
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>Av. Principal Gurabo, Ferreteria GLEM</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <p>+ 1 8097949359</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <p>ferreteriaglem@gmail.com</p>
+                    </div>
+                </div>
+                <form class="contact-form">
+                    <input type="text" placeholder="Nombre" required>
+                    <input type="email" placeholder="Email" required>
+                    <textarea placeholder="Mensaje" rows="5" required></textarea>
+                    <button type="submit" class="btn-primary">Enviar Mensaje</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Ferretería GLEM. Todos los derechos reservados.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
