@@ -162,11 +162,112 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnCheckout) {
         btnCheckout.addEventListener('click', function() {
             if (cart.length > 0) {
-                alert('¡Gracias por tu compra! Total: ' + cartTotal.textContent);
-                cart = [];
-                updateCartDisplay();
-                closeCart();
+                openCheckoutModal();
             }
+        });
+    }
+
+    // Checkout Modal Functionality
+    const checkoutModal = document.getElementById('checkoutModal');
+    const checkoutModalOverlay = document.getElementById('checkoutModalOverlay');
+    const checkoutModalClose = document.getElementById('checkoutModalClose');
+    const checkoutCancel = document.getElementById('checkoutCancel');
+    const checkoutConfirm = document.getElementById('checkoutConfirm');
+    const checkoutSummary = document.getElementById('checkoutSummary');
+    const customerName = document.getElementById('customerName');
+    const customerEmail = document.getElementById('customerEmail');
+    const customerPhone = document.getElementById('customerPhone');
+
+    function openCheckoutModal() {
+        // Generate order summary
+        const productList = cart.map(item => `${item.name} x${item.quantity} - $${(item.price * item.quantity).toFixed(2)}`).join('\n');
+        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        checkoutSummary.innerHTML = `<strong>Resumen del pedido:</strong><br>${cart.map(item => `${item.name} x${item.quantity}`).join('<br>')}<br><strong>Total: $${total.toFixed(2)}</strong>`;
+
+        checkoutModal.classList.add('active');
+        checkoutModalOverlay.classList.add('active');
+        closeCart();
+    }
+
+    function closeCheckoutModal() {
+        checkoutModal.classList.remove('active');
+        checkoutModalOverlay.classList.remove('active');
+        customerName.value = '';
+        customerEmail.value = '';
+        customerPhone.value = '';
+    }
+
+    if (checkoutModalClose) {
+        checkoutModalClose.addEventListener('click', closeCheckoutModal);
+    }
+
+    if (checkoutCancel) {
+        checkoutCancel.addEventListener('click', closeCheckoutModal);
+    }
+
+    if (checkoutModalOverlay) {
+        checkoutModalOverlay.addEventListener('click', closeCheckoutModal);
+    }
+
+    if (checkoutConfirm) {
+        checkoutConfirm.addEventListener('click', function() {
+            const name = customerName.value.trim();
+            const email = customerEmail.value.trim();
+            const phone = customerPhone.value.trim();
+
+            if (!name || !email || !phone) {
+                alert('Por favor completa todos los campos.');
+                return;
+            }
+
+            // Validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Por favor ingresa un correo electrónico válido.');
+                return;
+            }
+
+            // Prepare order data
+            const productList = cart.map(item => `${item.name} x${item.quantity} - $${(item.price * item.quantity).toFixed(2)}`).join(' | ');
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            // Fill hidden form fields
+            document.getElementById('orderFormName').value = name;
+            document.getElementById('orderFormEmail').value = email;
+            document.getElementById('orderFormPhone').value = phone;
+            document.getElementById('orderFormProducts').value = productList;
+            document.getElementById('orderFormTotal').value = `$${total.toFixed(2)}`;
+
+            // Submit the form via fetch
+            const form = document.querySelector('form[name="pedidos"]');
+            const formData = new FormData(form);
+
+            checkoutConfirm.disabled = true;
+            checkoutConfirm.textContent = 'Enviando...';
+
+            fetch('/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams(formData).toString()
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('¡Gracias por tu pedido, ' + name + '! Te contactaremos pronto para confirmar los detalles.');
+                    cart = [];
+                    updateCartDisplay();
+                    closeCheckoutModal();
+                } else {
+                    throw new Error('Error en el envío');
+                }
+            })
+            .catch(error => {
+                alert('Hubo un problema al enviar tu pedido. Por favor intenta de nuevo o contáctanos directamente.');
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                checkoutConfirm.disabled = false;
+                checkoutConfirm.textContent = 'Confirmar Pedido';
+            });
         });
     }
 
