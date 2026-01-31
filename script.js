@@ -158,16 +158,104 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Checkout button
+    // Checkout Modal Elements
+    const checkoutModal = document.getElementById('checkoutModal');
+    const checkoutOverlay = document.getElementById('checkoutOverlay');
+    const checkoutClose = document.getElementById('checkoutClose');
+    const checkoutForm = document.getElementById('checkoutForm');
+    const checkoutOrderSummary = document.getElementById('checkoutOrderSummary');
+    const productosInput = document.getElementById('productosInput');
+    const totalInput = document.getElementById('totalInput');
+
+    // Open checkout modal
+    function openCheckoutModal() {
+        // Populate order summary
+        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+        let orderSummaryHTML = '<h4>Resumen del Pedido</h4><ul class="order-items">';
+        cart.forEach(item => {
+            orderSummaryHTML += `<li>${item.quantity}x ${item.name} - $${(item.price * item.quantity).toFixed(2)}</li>`;
+        });
+        orderSummaryHTML += `</ul><div class="order-total"><strong>Total: $${total.toFixed(2)}</strong></div>`;
+        checkoutOrderSummary.innerHTML = orderSummaryHTML;
+
+        // Populate hidden fields
+        const productosText = cart.map(item => `${item.quantity}x ${item.name} ($${item.price.toFixed(2)} c/u)`).join(', ');
+        productosInput.value = productosText;
+        totalInput.value = `$${total.toFixed(2)}`;
+
+        // Show modal
+        checkoutModal.classList.add('active');
+        checkoutOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Close checkout modal
+    function closeCheckoutModal() {
+        checkoutModal.classList.remove('active');
+        checkoutOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    // Checkout button - opens checkout modal
     if (btnCheckout) {
         btnCheckout.addEventListener('click', function() {
             if (cart.length > 0) {
-                alert('¡Gracias por tu compra! Total: ' + cartTotal.textContent);
-                cart = [];
-                updateCartDisplay();
                 closeCart();
+                openCheckoutModal();
             }
         });
+    }
+
+    // Close checkout modal events
+    if (checkoutClose) {
+        checkoutClose.addEventListener('click', closeCheckoutModal);
+    }
+    if (checkoutOverlay) {
+        checkoutOverlay.addEventListener('click', closeCheckoutModal);
+    }
+
+    // Handle form submission
+    if (checkoutForm) {
+        checkoutForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(checkoutForm);
+
+            fetch('/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams(formData).toString()
+            })
+            .then(() => {
+                // Success
+                closeCheckoutModal();
+                cart = [];
+                updateCartDisplay();
+
+                // Show success message
+                showSuccessMessage();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Hubo un error al enviar tu pedido. Por favor intenta de nuevo.');
+            });
+        });
+    }
+
+    // Success message function
+    function showSuccessMessage() {
+        const successDiv = document.createElement('div');
+        successDiv.className = 'success-message';
+        successDiv.innerHTML = `
+            <div class="success-content">
+                <i class="fas fa-check-circle"></i>
+                <h3>¡Pedido Enviado!</h3>
+                <p>Hemos recibido tu pedido. Te contactaremos pronto para confirmar los detalles.</p>
+                <button class="btn-primary" onclick="this.parentElement.parentElement.remove()">Aceptar</button>
+            </div>
+        `;
+        document.body.appendChild(successDiv);
     }
 
     // Initialize cart display
